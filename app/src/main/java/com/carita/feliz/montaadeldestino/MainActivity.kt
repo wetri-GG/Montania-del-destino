@@ -1,5 +1,6 @@
 package com.carita.feliz.montaadeldestino
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.PopupMenu
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +64,36 @@ class MainActivity : AppCompatActivity() {
             ).show()
 
         }
-    }
+        lvRuta.setOnItemLongClickListener { parent, view, position, id ->
+            val territorioSeleccionado = territorios[position]
 
+            //el menú contextual desplegable
+            val popup = PopupMenu(this, view)
+            popup.menu.add(Menu.NONE, 1, Menu.NONE, "Inspeccionar Terreno")
+
+            //la acción al hacer clic en la opción del menú
+            popup.setOnMenuItemClickListener { item ->
+                if (item.itemId == 1) {
+                    // Intent  hacia DetalleActivity
+                    val intent = Intent(this, DetalleActivity::class.java).apply {
+                        putExtra("EXTRA_NOMBRE_ETAPA", territorioSeleccionado.nombre)
+                        putExtra("EXTRA_PELIGRO", territorioSeleccionado.peligrosidad)
+                    }
+                    startActivity(intent)
+                    true
+                } else {
+                    false
+                }
+            }
+
+            //Mostrar el menú
+            popup.show()
+
+            true
+        }
+
+
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
         return true
