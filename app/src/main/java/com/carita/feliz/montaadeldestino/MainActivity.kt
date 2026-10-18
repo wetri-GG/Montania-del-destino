@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.ListView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import android.view.Menu
+import android.view.MenuItem
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,11 +23,31 @@ class MainActivity : AppCompatActivity() {
         }
         val lvRuta = findViewById<ListView>(R.id.lista)
         val territorios = listOf(
-            Territorio("La Comarca", "Hogar de los Hobbits.", R.drawable.ic_launcher_foreground, "Baja"),
+            Territorio(
+                "La Comarca",
+                "Hogar de los Hobbits.",
+                R.drawable.ic_launcher_foreground,
+                "Baja"
+            ),
             Territorio("Rivendell", "Refugio de elfos.", R.drawable.ic_launcher_foreground, "Baja"),
-            Territorio("Minas de Moria", "Antiguo reino subterráneo.", R.drawable.ic_launcher_foreground, "Alta"),
-            Territorio("Lothlórien", "El místico bosque.", R.drawable.ic_launcher_foreground, "Media"),
-            Territorio("Mordor", "La tierra de la sombra.", R.drawable.ic_launcher_foreground, "Extrema 💀")
+            Territorio(
+                "Minas de Moria",
+                "Antiguo reino subterráneo.",
+                R.drawable.ic_launcher_foreground,
+                "Alta"
+            ),
+            Territorio(
+                "Lothlórien",
+                "El místico bosque.",
+                R.drawable.ic_launcher_foreground,
+                "Media"
+            ),
+            Territorio(
+                "Mordor",
+                "La tierra de la sombra.",
+                R.drawable.ic_launcher_foreground,
+                "Extrema 💀"
+            )
         )
         val adaptador = MiAdaptador(this, territorios)
         lvRuta.adapter = adaptador
@@ -33,8 +55,28 @@ class MainActivity : AppCompatActivity() {
         lvRuta.setOnItemClickListener { parent, view, position, id ->
             val territorioSeleccionado = territorios[position]
 
-            Toast.makeText(this,"Avanzando hacia: ${territorioSeleccionado.nombre}\nPeligrosidad: ${territorioSeleccionado.peligrosidad}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Avanzando hacia: ${territorioSeleccionado.nombre}\nPeligrosidad: ${territorioSeleccionado.peligrosidad}",
+                Toast.LENGTH_SHORT
+            ).show()
 
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_principal, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_abandonar -> {
+                finishAffinity()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
